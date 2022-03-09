@@ -27,14 +27,19 @@ namespace Shared
                 cfg.Enrich.WithCorrelationIdHeader(CorrelationHeaderKey);
             });
             builder.Services.AddHttpContextAccessor();
-
             builder.Services.AddProdigy();
-            var options = builder.Services.GetSettings<HttpClientOptions>("httpClient");
-            builder.Services.AddSingleton(options);
-            builder.Services.AddHttpClient<IHttpClient, CustomHttpClient>();
-
-
+            builder.Services.AddCustomHttpClient();
+            
             return builder;
+        }
+
+        private static IServiceCollection AddCustomHttpClient(this IServiceCollection services)
+        {
+            var options = services.GetSettings<HttpClientOptions>("httpClient");
+            services.AddSingleton(options);
+            services.AddHttpClient<IHttpClient, CustomHttpClient>();
+
+            return services;
         }
 
     }

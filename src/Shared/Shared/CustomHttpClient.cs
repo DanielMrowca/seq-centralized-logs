@@ -30,12 +30,12 @@ namespace Shared
             if (httpContext is null)
                 return string.Empty;
 
-            httpContext.Request.Headers.TryGetValue(Extensions.CorrelationHeaderKey, out var output);
-            var correlationId = output.ToString();
+            httpContext.Request.Headers.TryGetValue(Extensions.CorrelationHeaderKey, out var requestCorrelation);
+            var correlationId = requestCorrelation.ToString();
             if (!string.IsNullOrWhiteSpace(correlationId)) return correlationId;
 
-            httpContext.Response.Headers.TryGetValue(Extensions.CorrelationHeaderKey, out var output2);
-            correlationId = output2.ToString();
+            httpContext.Response.Headers.TryGetValue(Extensions.CorrelationHeaderKey, out var responseCorrelation);
+            correlationId = responseCorrelation.ToString();
             return correlationId;
         }
     }
